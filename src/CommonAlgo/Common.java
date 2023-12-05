@@ -329,4 +329,57 @@ public class Common {
 
         return result;
     }
+
+    // dynamic programming
+    // references: https://codility.com/media/train/15-DynamicProgramming.pdf
+
+    // with C = array of unique coins sorted from lowest to highest value, k = the total amount
+    public static int[] dynamic_coin_changing(int[] C, int k) {
+        int n = C.length;
+
+        // from no coin to all coin (0 -> n)
+        // from total number = 0 -> k
+        int[][] dp = new int[n + 1][k + 1];
+
+        for (int i = 1; i < dp[0].length; i++) {
+            // assign max value to dp when coin set is empty
+            dp[0][i] = Integer.MAX_VALUE;
+        }
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 0; j < C[i - 1]; j++) {
+                dp[i][j] = dp[i - 1][j];
+            }
+            for (int j = C[i - 1]; j < k + 1; j++) {
+                dp[i][j] = Math.min(dp[i][j - C[i - 1]] + 1, dp[i - 1][j]);
+            }
+        }
+
+        return dp[n]; // return the whole array value
+    }
+
+    // problem:
+    // A small frog wants to get from position 0 to k (1 � k � 10 000). The frog can
+    //jump over any one of n fixed distances s0, s1, . . . , sn−1 (1 � si � k). The goal is to count the
+    //number of different ways in which the frog can jump to position k. To avoid overflow, it is
+    //sufficient to return the result modulo q, where q is a given number.
+    //We assume that two patterns of jumps are different if, in one pattern, the frog visits
+    //a position which is not visited in the other pattern
+
+    public static int frog(int[] S, int k, int q) {
+        int n = S.length;
+
+        int[] dp = new int[k + 1];
+        dp[0] = 1; // the ways the frog can jump to position 0 is only 1
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int m = 0; m < S.length; m++) {
+                if (S[m] <= i) {
+                    dp[i] = (dp[i] + dp[i - S[m]]) % q;
+                }
+            }
+        }
+
+        return dp[n];
+    }
 }

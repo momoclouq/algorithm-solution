@@ -49,9 +49,30 @@ public class TieRopes {
 //        N is an integer within the range [1..100,000];
 //        K is an integer within the range [1..1,000,000,000];
 //        each element of array A is an integer within the range [1..1,000,000,000].
+        System.out.println(solution(4, new int[]{1, 2, 3, 4, 1, 1, 3}));
+        System.out.println(solution(1, new int[]{1}));
+        System.out.println(solution(4, new int[]{1, 1, 1}));
+        System.out.println(solution(4, new int[]{1, 2, 1}));
+        System.out.println(solution(1, new int[]{1000000000, 1000000000, 1000000000, 1000000000}));
+        System.out.println(solution(1000000000, new int[]{1, 2, 1000000000}));
+        System.out.println(solution(10, new int[]{1, 2, 3, 4, 5, 7, 11, 3, 4, 2, 10, 7, 9}));
+
     }
 
     public static int solution(int K, int[] A) {
+        int result = 0;
+        long currentRope = 0;
 
+        for (int i = 0; i < A.length; i++) {
+            currentRope += A[i];
+
+            if (currentRope >= K) {
+                // generate a valid rope -> start a new rope
+                currentRope = 0;
+                result++;
+            }
+        }
+
+        return result;
     }
 }
